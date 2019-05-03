@@ -28,11 +28,17 @@ fn get_nmake() -> PathBuf {
     PathBuf::from(nmake)
 }
 
-fn main() {
+fn build_detours() {
     let nmake = get_nmake();
     //
     let cmd = Command::new(nmake)
-        .envs(cc::Build::new().cargo_metadata(false).get_compiler().env().to_vec())
+        .envs(
+            cc::Build::new()
+                .cargo_metadata(false)
+                .get_compiler()
+                .env()
+                .to_vec(),
+        )
         .current_dir(Path::new("deps/detours-src/src"))
         .arg("/NOLOGO")
         .output()
@@ -41,6 +47,10 @@ fn main() {
     let out = cmd.stdout;
     println!("Final Output:");
     std::io::stdout().write_all(&out).unwrap();
+}
+
+fn main() {
+    build_detours();
     //
     unimplemented!()
 }
