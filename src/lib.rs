@@ -1,6 +1,6 @@
 //! Bindings to the Microsoft Detours API.
 
-#[test]
+#[cfg(test)]
 mod tests {
     //
 }
