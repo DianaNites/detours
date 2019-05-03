@@ -10,7 +10,5 @@ winapi = "0.3.7"
 
 [build-dependencies]
 cc = "1.0.36"
-reqwest = "0.9.16"
-vswhere = "0.1.0"
+serde_json = "1.0.39"
 bindgen = "0.49.0"
-flate2 = "1.0.7"

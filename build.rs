@@ -4,33 +4,43 @@ use std::{
     fs::{self, OpenOptions},
     io::{prelude::*, BufWriter},
     path::{Path, PathBuf},
+    process::Command,
 };
-use std::io;
-use flate2::read::DeflateDecoder;
-
-static DOWNLOAD_URL: &str = "https://github.com/Microsoft/Detours/archive/v4.0.1.zip";
 
 type Result<T> = std::result::Result<T, Box<std::error::Error>>;
 
-/// Download sources, return path to zip.
-fn download_sources() -> Result<PathBuf> {
-    //
-    let path = Path::new(&env::var_os("OUT_DIR").unwrap()).join("Detours.zip");
-    println!("{:#?}", path);
-    //
-    let mut resp = reqwest::get(DOWNLOAD_URL)?;
-    let mut buf = Vec::new();
-    resp.read_to_end(&mut buf);
-    let file = OpenOptions::new()
-        .write(true)
-        .create(true)
-        .truncate(true)
-        .open(&path).expect("Couldn't create Detours.zip");
-    let mut writer = BufWriter::new(file);
-    writer.write_all(&mut buf);
-    Ok(path)
+fn get_nmake() -> PathBuf {
+    let vswhere = Path::new(&env::var_os("ProgramFiles(x86)").unwrap())
+        .join(r"Microsoft Visual Studio\Installer\vswhere.exe");
+    let cmd = Command::new(vswhere)
+        .arg("-latest")
+        .arg("-utf8")
+        .arg("-format")
+        .arg("json")
+        .arg("-find")
+        .arg(r"VC\Tools\**\x64\nmake.exe")
+        .output()
+        .expect("Failed to run vswhere");
+    let nmake = cmd.stdout;
+    // Parse the string of data into serde_json::Value.
+    let nmake: serde_json::Value = serde_json::from_slice(&nmake).unwrap();
+    let nmake = nmake[0].as_str().expect("Couldn't find nmake");
+    PathBuf::from(nmake)
 }
 
 fn main() {
-    let src = download_sources().expect("Couldn't get Detours source.");
+    let nmake = get_nmake();
+    //
+    let cmd = Command::new(nmake)
+        .envs(cc::Build::new().cargo_metadata(false).get_compiler().env().to_vec())
+        .current_dir(Path::new("deps/detours-src/src"))
+        .arg("/NOLOGO")
+        .output()
+        .expect("Failed to build detours");
+    //
+    let out = cmd.stdout;
+    println!("Final Output:");
+    std::io::stdout().write_all(&out).unwrap();
+    //
+    unimplemented!()
 }
