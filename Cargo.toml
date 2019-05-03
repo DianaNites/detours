@@ -3,6 +3,7 @@ name = "detours"
 version = "0.1.0"
 authors = ["Diana <5275194+DianaNites@users.noreply.github.com>"]
 edition = "2018"
+publish = false
 
 [dependencies]
 winapi = "0.3.7"
