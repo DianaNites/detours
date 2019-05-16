@@ -27,6 +27,10 @@ exclude = [
 [badges]
 maintenance = { status = "as-is" }
 
+[features]
+default = []
+buildtime_bindgen = ["bindgen"]
+
 [dependencies]
 
 [dev-dependencies.winapi]
@@ -39,4 +43,4 @@ features = [
 
 [build-dependencies]
 cc = "1.0.37"
-bindgen = "0.49.0"
+bindgen = { version = "0.49.0", optional = true}

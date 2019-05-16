@@ -2,6 +2,10 @@
 #![allow(non_camel_case_types)]
 #![allow(non_snake_case)]
 
+#[cfg(not(feature = "buildtime_bindgen"))]
+include!("bundled_bindings.rs");
+
+#[cfg(feature = "buildtime_bindgen")]
 include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
 
 #[cfg(test)]
