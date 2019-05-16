@@ -1,4 +1,4 @@
 [submodule "deps/detours-src"]
-	path = deps/detours-src
+	path = detours-sys/deps/detours-src
 	url = https://github.com/Microsoft/Detours.git
 	ignore = "dirty"
