@@ -1,13 +1,7 @@
 //! Build detours.
 use std::{env, fs, path::PathBuf};
 
-fn main() {
-    println!("cargo:rerun-if-changed=build.rs");
-    println!("cargo:rustc-link-lib=detours");
-    //
-    let out_path = PathBuf::from(env::var("OUT_DIR").unwrap());
-    fs::copy("deps/detours-src/src/detours.h", out_path.join("detours.h")).unwrap();
-    //
+fn build_detours() {
     cc::Build::new()
         .include("deps/detours-src/src/")
         .static_crt(true)
@@ -26,12 +20,21 @@ fn main() {
         .file("deps/detours-src/src/image.cpp")
         .file("deps/detours-src/src/creatwth.cpp")
         .compile("detours");
+}
+
+fn main() {
+    println!("cargo:rerun-if-changed=build.rs");
+    //
+    let out_path = PathBuf::from(env::var("OUT_DIR").unwrap());
+    fs::copy("deps/detours-src/src/detours.h", out_path.join("detours.h")).unwrap();
+    //
+    build_detours();
 
     let bindings = bindgen::Builder::default()
-        .clang_arg(format!("-I{}", out_path.to_str().unwrap()))
+        .clang_arg(format!("-I{}", out_path.to_str().expect("OUTDIR is weird")))
         .clang_arg("-fms-compatibility")
         .clang_arg("-fms-extensions")
-        //
+        // Detouring APIs
         .whitelist_function("DetourTransactionBegin")
         .whitelist_function("DetourUpdateThread")
         .whitelist_function("DetourAttach")
@@ -44,7 +47,31 @@ fn main() {
         .whitelist_function("DetourTransactionAbort")
         .whitelist_function("DetourTransactionCommit")
         .whitelist_function("DetourTransactionCommitEx")
-        //
+        // Targeting APIs
+        .whitelist_function("DetourFindFunction")
+        .whitelist_function("DetourCodeFromPointer")
+        // Binary and Payload access APIs
+        .whitelist_function("DetourEnumerateModules")
+        .whitelist_function("DetourGetEntryPoint")
+        .whitelist_function("DetourGetModuleSize")
+        .whitelist_function("DetourEnumerateExports")
+        .whitelist_function("DetourEnumerateImport")
+        .whitelist_function("DetourEnumerateImportEx")
+        .whitelist_function("DetourFindPayload")
+        .whitelist_function("DetourGetContainingModule")
+        .whitelist_function("DetourGetSizeOfPayloads")
+        // Binary Modifcation APIs
+        .whitelist_function("DetourBinaryOpen")
+        .whitelist_function("DetourBinaryEnumeratePayloads")
+        .whitelist_function("DetourBinaryFindPayload")
+        .whitelist_function("DetourBinarySetPayload")
+        .whitelist_function("DetourBinaryDeletePayload")
+        .whitelist_function("DetourBinaryPurgePayloads")
+        .whitelist_function("DetourBinaryEditImports")
+        .whitelist_function("DetourBinaryResetImports")
+        .whitelist_function("DetourBinaryWrite")
+        .whitelist_function("DetourBinaryClose")
+        // Injection APIs
         .whitelist_function("DetourCreateProcessWithDllEx")
         .whitelist_function("DetourCreateProcessWithDlls")
         .whitelist_function("DetourCopyPayloadToProcess")
