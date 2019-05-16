@@ -47,7 +47,7 @@ mod tests {
                 DetourRestoreAfterWith();
 
                 DetourTransactionBegin();
-                DetourUpdateThread(GetCurrentThread());
+                DetourUpdateThread(GetCurrentThread() as _);
                 DetourAttach(tru, new);
                 dbg!(DetourTransactionCommit());
                 //
@@ -57,7 +57,7 @@ mod tests {
             0 => unsafe {
                 dbg!(*tru);
                 DetourTransactionBegin();
-                DetourUpdateThread(GetCurrentThread());
+                DetourUpdateThread(GetCurrentThread() as _);
                 DetourDetach(tru, new);
                 dbg!(DetourTransactionCommit());
                 dbg!(*tru);
