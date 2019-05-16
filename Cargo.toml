@@ -3,8 +3,29 @@ name = "detours-sys"
 version = "0.1.0"
 authors = ["Diana <5275194+DianaNites@users.noreply.github.com>"]
 edition = "2018"
-publish = false
 links = "detours"
+# Package stuff
+description = "Rust bindings to Microsoft Detours"
+documentation = "https://github.com/microsoft/Detours/wiki/Reference"
+homepage = "https://github.com/DianaNites/detours"
+repository = "https://github.com/DianaNites/detours"
+readme = "README.md"
+keywords = [
+    "detours",
+    "hooking",
+    "injection",
+]
+categories = [
+    "external-ffi-bindings",
+    "os::windows-apis",
+]
+license = "MIT OR APACHE"
+exclude = [
+    "/.vscode/**"
+]
+
+[badges]
+maintenance = { status = "as-is" }
 
 [dependencies]
 
