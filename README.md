@@ -1,6 +1,6 @@
 # Detours-sys
 
-[![Crates.io](https://img.shields.io/crates/v/detours.svg)](https://crates.io/crates/detours-sys)
+[![Crates.io](https://img.shields.io/crates/v/detours-sys.svg)](https://crates.io/crates/detours-sys)
 ![maintenance-as-is](https://img.shields.io/badge/maintenance-as--is-yellow.svg)
 
 Rust bindings to [Microsoft Detours](https://github.com/Microsoft/Detours)
