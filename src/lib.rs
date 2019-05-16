@@ -27,7 +27,6 @@ mod tests {
         SLEPT = (dwEnd - dwBeg) as i32;
     }
 
-    // #[allow(unreachable_code, unused_variables, dead_code)]
     extern "system" fn DllMain(_: HINSTANCE, reason: DWORD, _: LPVOID) -> BOOL {
         if unsafe { DetourIsHelperProcess() } == 1 {
             return 1;
