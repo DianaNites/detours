@@ -19,7 +19,7 @@ categories = [
     "external-ffi-bindings",
     "os::windows-apis",
 ]
-license = "MIT OR APACHE"
+license = "MIT OR Apache-2.0"
 exclude = [
     "/.vscode/**"
 ]
