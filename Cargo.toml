@@ -7,7 +7,6 @@ publish = false
 links = "detours"
 
 [dependencies]
-winapi = "0.3.7"
 
 [dev-dependencies.winapi]
 version = "0.3.7"
@@ -18,5 +17,5 @@ features = [
 ]
 
 [build-dependencies]
-cc = "1.0.36"
+cc = "1.0.37"
 bindgen = "0.49.0"
