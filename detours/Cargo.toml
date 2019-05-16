@@ -1,0 +1,34 @@
+[package]
+name = "detours"
+version = "0.1.0"
+authors = ["Diana <5275194+DianaNites@users.noreply.github.com>"]
+edition = "2018"
+# Package stuff
+description = "Idiomatic Rust bindings to Microsoft Detours"
+documentation = "https://github.com/microsoft/Detours/wiki/Reference"
+homepage = "https://github.com/DianaNites/detours"
+repository = "https://github.com/DianaNites/detours"
+readme = "README.md"
+keywords = [
+    "detours",
+    "hooking",
+    "injection",
+]
+categories = [
+    "api-bindings",
+    "os::windows-apis",
+]
+license = "MIT OR Apache-2.0"
+exclude = [
+    "/.vscode/**"
+]
+
+[badges]
+maintenance = { status = "as-is" }
+
+[features]
+default = []
+buildtime_bindgen = ["detours-sys/buildtime_bindgen"]
+
+[dependencies]
+detours-sys = { path = "../detours-sys", version = "0.1.1" }
