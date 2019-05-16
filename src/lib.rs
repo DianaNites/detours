@@ -17,7 +17,6 @@ mod tests {
         um::{processthreadsapi::GetCurrentThread, synchapi::Sleep, sysinfoapi::GetTickCount},
     };
 
-    // static mut TRUE_SLEEP: unsafe extern "system" fn(DWORD) = Sleep;
     static mut TRUE_SLEEP: unsafe extern "system" fn(DWORD) = Sleep;
     static mut SLEPT: LONG = 0;
 
