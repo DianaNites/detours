@@ -22,14 +22,10 @@ fn build_detours() {
         .compile("detours");
 }
 
-fn main() {
-    println!("cargo:rerun-if-changed=build.rs");
-    //
+fn generate_bindings() {
     let out_path = PathBuf::from(env::var("OUT_DIR").unwrap());
     fs::copy("deps/detours-src/src/detours.h", out_path.join("detours.h")).unwrap();
     //
-    build_detours();
-
     let bindings = bindgen::Builder::default()
         .clang_arg(format!("-I{}", out_path.to_str().expect("OUTDIR is weird")))
         .clang_arg("-fms-compatibility")
@@ -82,8 +78,14 @@ fn main() {
         .header("build/wrapper.h")
         .generate()
         .expect("Unable to generate bindings");
-
+    //
     bindings
         .write_to_file(out_path.join("bindings.rs"))
         .expect("Couldn't write bindings!");
+}
+
+fn main() {
+    println!("cargo:rerun-if-changed=build.rs");
+    build_detours();
+    generate_bindings();
 }
