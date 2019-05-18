@@ -41,25 +41,19 @@ mod tests {
         match reason {
             // DLL_PROCESS_ATTACH
             1 => unsafe {
-                dbg!(*tru);
-                //
                 DetourRestoreAfterWith();
 
                 DetourTransactionBegin();
                 DetourUpdateThread(GetCurrentThread() as _);
                 DetourAttach(tru, new);
-                dbg!(DetourTransactionCommit());
-                //
-                dbg!(*tru);
+                DetourTransactionCommit();
             },
             // DLL_PROCESS_DETACH
             0 => unsafe {
-                dbg!(*tru);
                 DetourTransactionBegin();
                 DetourUpdateThread(GetCurrentThread() as _);
                 DetourDetach(tru, new);
-                dbg!(DetourTransactionCommit());
-                dbg!(*tru);
+                DetourTransactionCommit();
             },
             _ => (),
         }
